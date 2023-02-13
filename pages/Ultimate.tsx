@@ -52,26 +52,127 @@ export default function Ultimate({ fraction }: { fraction: number }) {
         }
 
         .q {
-          position: relative;
+          position: absolute;
           width: 100%;
           height: 100%;
           left: 50%;
-          top: 10%;
+          top: 110%;
           font-size: 16px;
         }
       `}</style>
 
       <div className="ultBox">
-        <div className="circle" />
-        <CircleBars fraction={fraction} />
-        <div className="percent">
-          <div className="percentBig">
-            {Math.floor(fraction * 100).toFixed(0)}
-          </div>
-          <div className="percentSmall">{"%"}</div>
-        </div>
-        <div className="q">{"Q"}</div>
+        {fraction >= 1 && (
+          <>
+            <BlueCircle />
+            <div
+              className="q"
+              style={{
+                filter: "drop-shadow(rgba(0, 0, 255, 1) 0px 0px 1px)",
+              }}
+            >
+              {"Q"}
+            </div>
+          </>
+        )}
+        {fraction < 1 && (
+          <>
+            <div className="circle" />
+            <CircleBars fraction={fraction} />
+
+            <div className="percent">
+              <div className="percentBig">
+                {Math.floor(fraction * 100).toFixed(0)}
+              </div>
+              <div className="percentSmall">{"%"}</div>
+            </div>
+            <div className="q">{"Q"}</div>
+          </>
+        )}
       </div>
+    </div>
+  );
+}
+
+export function BlueCircle() {
+  return (
+    <div className="container">
+      <style jsx>
+        {`
+          .container {
+          }
+
+          .blueContainer {
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(0, 0, 200, 0.2);
+            border-radius: 50%;
+            filter: drop-shadow(rgba(0, 0, 255, 1) 0px 0px 1px);
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px 0 #00f, inset -100px -10px 20px 0 #33f,
+              0 0 10px 20px #0ff;
+            // box-shadow: 0 0 0px 5px #00f;
+          }
+
+          @keyframes slidein {
+            0% {
+              transform: scale(1) rotate(0deg);
+            }
+
+            50% {
+              transform: scale(0.8) rotate(360deg);
+            }
+
+            100% {
+              transform: scale(1) rotate(0deg);
+            }
+          }
+
+          @keyframes slidein2 {
+            0% {
+              transform: scale(0.8) rotate(0deg);
+            }
+
+            50% {
+              transform: scale(1) rotate(-360deg);
+            }
+
+            100% {
+              transform: scale(0.8) rotate(0deg);
+            }
+          }
+
+          .circle1 {
+            animation-duration: 1.4s;
+            animation-name: slidein;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+          }
+
+          .circle2 {
+            animation-duration: 1.1s;
+            animation-name: slidein2;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+          }
+
+          .rocket {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            background-image: url("/rocket.png");
+            background-size: cover;
+          }
+        `}
+      </style>
+      <div className="blueContainer circle1" />
+      <div className="blueContainer circle2" />
+      <div className="rocket" />
     </div>
   );
 }
@@ -80,7 +181,7 @@ export function CircleBars({ fraction }: { fraction: number }) {
   const bars: { theta: number; on: boolean }[] = [];
   const N = 36;
   for (let i = 0; i < N; i++) {
-    const theta = (-i / N) * 2 * Math.PI + Math.PI / 2;
+    const theta = (i / N) * 2 * Math.PI - (2 * Math.PI) / 2;
     bars.push({ theta: (theta * 180) / Math.PI, on: i / N <= fraction });
   }
 
@@ -103,6 +204,8 @@ export function CircleBars({ fraction }: { fraction: number }) {
           position: absolute;
           top: 50%;
           left: 50%;
+          transition: transform 0.5s;
+          transition-delay: 1s;
         }
 
         .miniBar {

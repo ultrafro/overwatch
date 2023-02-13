@@ -11,6 +11,7 @@ export default function PlayerPortrait({ src }: { src: string }) {
             left: 0;
             width: 10vh;
             height: 10vh;
+            transform: scaleX(-1);
           }
         `}
       </style>

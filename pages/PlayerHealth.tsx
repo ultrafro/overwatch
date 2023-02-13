@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 export default function PlayerHealth({
   health,
   maxHealth,
@@ -5,6 +7,61 @@ export default function PlayerHealth({
   health: number;
   maxHealth: number;
 }) {
+  const [fraction, setFraction] = useState<number>(health / maxHealth);
+  const currentFraction = useRef<number | null>(fraction);
+  const lastLoopTime = useRef<number | null>(null);
+
+  useEffect(
+    function whenLoad() {
+      let loopRef: number | null = null;
+
+      const targetFraction = health / maxHealth;
+
+      const onLoop = (timestamp?: number) => {
+        const current = currentFraction.current ?? 0;
+
+        const displacement = targetFraction - current;
+        const displacementMagnitude = Math.abs(displacement);
+
+        const maxSpeed = 0.2; //hp/second
+        const delta =
+          typeof timestamp === "number" &&
+          typeof lastLoopTime.current === "number"
+            ? timestamp - lastLoopTime.current
+            : 0;
+
+        const allowedMagnitude =
+          displacementMagnitude < 0
+            ? Math.min((delta / 1000) * maxSpeed, displacementMagnitude)
+            : Math.min((delta / 1000) * maxSpeed * 5, displacementMagnitude);
+
+        const newCurrent = current + Math.sign(displacement) * allowedMagnitude;
+
+        if (timestamp) {
+          lastLoopTime.current = timestamp;
+        }
+
+        setFraction(newCurrent);
+        currentFraction.current = newCurrent;
+
+        if (Math.abs(current - targetFraction) < 0.001) {
+          setFraction(targetFraction);
+          currentFraction.current = targetFraction;
+          typeof loopRef === "number" && window.cancelAnimationFrame(loopRef);
+        }
+
+        loopRef = window.requestAnimationFrame(onLoop);
+      };
+
+      onLoop();
+
+      return () => {
+        typeof loopRef === "number" && window.cancelAnimationFrame(loopRef);
+      };
+    },
+    [health, maxHealth]
+  );
+
   return (
     <div className="container">
       <style jsx>{`
@@ -49,13 +106,15 @@ export default function PlayerHealth({
         }
       `}</style>
       <div className={"healthText"}>
-        <div className={"healthTextFirst"}>{`${health}`}</div>
+        <div className={"healthTextFirst"}>{`${Math.floor(
+          fraction * maxHealth
+        ).toFixed(0)}`}</div>
         <div className={"healthTextSecond"}>{`/${maxHealth}`}</div>
       </div>
 
       <div className="healthBars">
         <MaxHealthBar />
-        <HealthBar fraction={health / maxHealth} />
+        <HealthBar fraction={fraction} />
       </div>
     </div>
   );
