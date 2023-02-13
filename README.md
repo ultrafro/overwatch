@@ -6,6 +6,18 @@ This was a practice site to recreate the Overwatch UI in css (style-jsx) on next
 - you can press e / shift to use your ability (on cooldown)
 - you can press q to do an ult
 
+
+live demo:
+https://overwatch-ui.vercel.app/
+
+video:
+https://user-images.githubusercontent.com/3029964/218413716-5afa3e11-2418-48a7-9542-2acc7ec0a8ca.mp4
+
+(original overwatch UI this is based on):
+![image](https://user-images.githubusercontent.com/3029964/218413934-0e35a099-0b4b-40e8-9a44-960638d977e7.png)
+
+
+
 ## Getting Started
 
 First, run the development server:
