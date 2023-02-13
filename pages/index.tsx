@@ -5,6 +5,8 @@ import { Inter } from "@next/font/google";
 import overwatchStyles from "@/styles/OverwatchUIStyles.module.css";
 import PlayerPortrait from "./PlayerPortrait";
 import PlayerInfo from "./PlayerInfo";
+import Ultimate from "./Ultimate";
+import Abilities from "./Abilities";
 // import overwatchStyles from "@/styles/OverwatchUIStyles.css";
 
 // const inter = Inter({ subsets: ["latin"] });
@@ -17,6 +19,13 @@ export default function Home() {
         <div className="playerInfo">
           <PlayerInfo />
         </div>
+        <div className="ult">
+          <Ultimate fraction={0.75} />
+        </div>
+
+        <div className="abilities">
+          <Abilities />
+        </div>
 
         <style jsx>{`
           .container {
@@ -28,6 +37,7 @@ export default function Home() {
             top: 0;
             color: white;
             font-family: "Overwatch";
+            overflow: hidden;
           }
 
           .playerInfo {
@@ -38,6 +48,26 @@ export default function Home() {
             height: 100%;
             transform-origin: center;
             transform: rotate(-1.5deg);
+          }
+
+          .ult {
+            position: absolute;
+            bottom: 10vh;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+          }
+
+          .abilities {
+            position: absolute;
+            bottom: 10vh;
+            right: 15vh;
+
+            transform-origin: center;
+            transform: rotate(1.5deg);
           }
         `}</style>
       </div>
