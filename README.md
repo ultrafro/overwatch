@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Overwatch UI recreation in css + react + next-js
+
+This was a practice site to recreate the Overwatch UI in css (style-jsx) on next-js
+
+- you can click to increase your ult and decrease your health
+- you can press e / shift to use your ability (on cooldown)
+- you can press q to do an ult
 
 ## Getting Started
 
